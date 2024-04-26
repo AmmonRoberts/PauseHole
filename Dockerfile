@@ -1,4 +1,3 @@
-# Stage 1: Build the React application
 FROM node:lts as build
 
 WORKDIR /app
@@ -13,12 +12,13 @@ COPY . .
 
 RUN bun run build
 
-# Stage 2: Serve the app using Nginx
 FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Copy the default nginx.conf provided by tiangolo/node-frontend
+# This is not great, but it's PROBABLY fine for now on a non-public site.
+COPY .env /usr/share/nginx/html
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
