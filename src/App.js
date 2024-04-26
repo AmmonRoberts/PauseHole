@@ -14,7 +14,6 @@ function App() {
 
 	const pausePiHoles = () => {
 		console.log(minutes);
-		console.log(process.env);
 
 		axios.get(`http://${process.env.REACT_APP_PIHOLE_0_ADDRESS}/admin/api.php?disable=${minutes * 60}&auth=${process.env.REACT_APP_PIHOLE_0_AUTH}`)
 			.then(response => {
@@ -64,7 +63,6 @@ function App() {
 					<Button className="button" color="error" onClick={pausePiHoles} variant="contained">Disable</Button>
 					<Button className="button" color="success" onClick={unPausePiHoles} variant="contained">Enable</Button>
 				</Box>
-
 			</header>
 		</div>
 	);
