@@ -25,3 +25,4 @@ yarn-error.log*
 backend/API/bin/
 backend/API/obj/
 backend/API/appsettings*.json
+.vscode/launch.json
