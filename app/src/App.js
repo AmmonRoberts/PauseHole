@@ -32,7 +32,8 @@ function App() {
 	const pausePiHoles = async () => {
 		setPiHolesLoading(true);
 
-		await axios.post(`http://localhost:5000/pause?minutes=${minutes}`)
+		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
+		await axios.post(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${minutes}`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -52,7 +53,8 @@ function App() {
 	const unPausePiHoles = async () => {
 		setPiHolesLoading(true);
 
-		await axios.post(`http://localhost:5000/unpause`)
+		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
+		await axios.post(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/unpause`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -72,7 +74,8 @@ function App() {
 	async function getStatus() {
 		setPiHolesLoading(true);
 
-		await axios.get(`http://localhost:5000/status`)
+		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
+		await axios.get(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/status`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
