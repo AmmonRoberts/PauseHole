@@ -1,6 +1,6 @@
 # PauseThePi Backend
 
-This backend is a C# 8 minimal API and very easy to st up.
+This backend is a C# 8 minimal API and very easy to set up.
 
 To run it, all you need is to add some config. Here's an example of how that might look:
 
