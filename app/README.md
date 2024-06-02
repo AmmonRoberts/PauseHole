@@ -5,7 +5,7 @@ For the frontend, I use a ReactJS app along with [Bun](https://bun.sh/). You sho
 Before running, you'll need a .env file in the `app` directory. Create it like so:
 
 ```
-REACT_APP_BACKEND_ADDRESS=<Backend Address>
+REACT_APP_BACKEND_ADDRESS=<Backend Address Or Domain>:8080
 ```
 
 To start the app, run the following commands:
