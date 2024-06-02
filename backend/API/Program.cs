@@ -12,7 +12,7 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
+app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("*"));
 
 app.MapGet("/status", async (HttpClient client, IOptions<PiHoleSettings> config, CancellationToken ct) =>
 {
