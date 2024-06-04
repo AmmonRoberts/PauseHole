@@ -2,7 +2,7 @@
 
 This is an app I made so that I (or other people in my home) can use to easily pause PiHole ad blocking without me needing to do it every time. The backend gets the list of PiHole devices from configuration and attempts to pause/unpause ad blocking and check the status for all devices.
 
-There's currently not very much effective error handling.
+There's currently not very much useful error handling.
 
 
 ## Backend
