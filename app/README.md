@@ -1,4 +1,4 @@
-# PauseThePi App
+# PauseHole App
 
 For the frontend, I use a ReactJS app along with [Bun](https://bun.sh/). You should be able to just use NPM or Yarn based on your preference.
 

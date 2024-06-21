@@ -1,4 +1,4 @@
-# PauseThePi
+# PauseHole
 
 This is an app I made so that I (or other people in my home) can use to easily pause PiHole ad blocking without me needing to do it every time. The backend gets the list of PiHole devices from configuration and attempts to pause/unpause ad blocking and check the status for all devices.
 
@@ -27,14 +27,14 @@ Once you have the back- and frontend set up, to build and run them in Docker, ex
 ### Backend
 
 ```bash
-docker build --target backend-runtime -t pausethepi-backend .
-docker run -p 8080:8080 pausethepi-backend
+docker build --target backend-runtime -t pausehole-backend .
+docker run -p 8080:8080 pausehole-backend
 ```
 
 
 ### Frontend
 
 ```bash
-docker build --target app-runtime -t pausethepi .
-docker run -p 80:80 pausethepi
+docker build --target app-runtime -t pausehole .
+docker run -p 80:80 pausehole
 ```

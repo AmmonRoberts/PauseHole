@@ -1,4 +1,4 @@
-# PauseThePi Backend
+# PauseHole Backend
 
 This backend is a C# 8 minimal API and very easy to set up.
 
