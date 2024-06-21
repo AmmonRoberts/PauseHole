@@ -14,6 +14,7 @@ For the backend, I use a very simple C# 8 minimal API to interact with each PiHo
 
 I use a ReactJS frontend for this project. It has a very simple (and probably a little ugly) interface that shows the status of each PiHole and allows you to pause/unpause the PiHoles in a single click.
 
+
 ## Docker
 
 This project can be run using Docker. Currently, it just uses a single multi-stage Dockerfile. Before building and running the app and backend, you'll need to set up your configuration for both the frontend and backend.
@@ -23,6 +24,7 @@ For frontend setup, see the [app README](./app/README.md).
 For backend setup, see the [backend README](./backend/README.md).
 
 Once you have the back- and frontend set up, to build and run them in Docker, execute the following commands:
+
 
 ### Backend
 
@@ -38,3 +40,8 @@ docker run -p 8080:8080 pausehole-backend
 docker build --target app-runtime -t pausehole .
 docker run -p 80:80 pausehole
 ```
+
+
+## Credit
+
+Thanks to @ericpattison for helping me come up with the most perfect name possible.
