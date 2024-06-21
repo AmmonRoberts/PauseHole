@@ -44,4 +44,4 @@ docker run -p 80:80 pausehole
 
 ## Credit
 
-Thanks to @ericpattison for helping me come up with the most perfect name possible.
+Thanks to [@ericpattison](https://github.com/ericpattison) for helping me come up with the most perfect name possible.
