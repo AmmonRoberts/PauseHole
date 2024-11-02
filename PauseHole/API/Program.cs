@@ -3,6 +3,8 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.Configure<PiHoleSettings>(builder.Configuration.GetSection("PiHoleSettings"));
 
 builder.Services.AddHttpClient();

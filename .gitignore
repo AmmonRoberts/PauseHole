@@ -1,3 +1,4 @@
+node_modules
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -28,3 +29,6 @@ bin/
 obj/
 appsettings*.json
 .vscode/launch.json
+/.vs
+/PauseHole/.vs
+PauseHole/PauseHole.AppHost/Properties/launchSettings.json

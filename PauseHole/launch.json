@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Run all",
+            "configurations": [
+                "Run backend",
+            ]
+        }
+    ],
+    "configurations": [
+        {
+            "name": "Run backend",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/API/API.csproj"
+        }
+    ]
+}
