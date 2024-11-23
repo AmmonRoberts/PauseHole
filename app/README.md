@@ -8,7 +8,7 @@ Before running, you'll need a .env file in the `app` directory. Create it like s
 REACT_APP_BACKEND_ADDRESS=<Backend Address Or Domain>:8080
 ```
 
-To start the app, run the following commands:
+To start the app by itself, run the following commands in the CLI:
 
 ```bash
 cd app
