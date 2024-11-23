@@ -21,10 +21,10 @@ To run it, all you need is to add some config. Here's an example of how that mig
 }
 ```
 
-Once you have that if you're using Visual Studio, you can just run it the usual way by hitting F5. If you're using a CLI, run the following commands:
+Once you have that, if you'd like the run the API by itself and are using Visual Studio, you can just run it the usual way by hitting F5 after selecting API as the startup project. If you're using a CLI, run the following commands:
 
 ```bash
-cd backend/API
+cd API
 dotnet build
 dotnet run
 ```
