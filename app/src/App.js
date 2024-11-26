@@ -33,7 +33,7 @@ function App() {
 		setPiHolesLoading(true);
 
 		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.post(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${minutes}`)
+		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${minutes}`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -54,7 +54,7 @@ function App() {
 		setPiHolesLoading(true);
 
 		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.post(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/unpause`)
+		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/unpause`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -75,7 +75,7 @@ function App() {
 		setPiHolesLoading(true);
 
 		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.get(`http://${process.env.REACT_APP_BACKEND_ADDRESS}/status`)
+		await axios.get(`${process.env.REACT_APP_BACKEND_ADDRESS}/status`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
