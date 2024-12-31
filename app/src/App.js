@@ -95,9 +95,9 @@ function App() {
 				<div>
 					{piHolesLoading && <ReactLoading type={'spin'} color={'white'} height={'25%'} width={'25%'} />}
 					{!piHolesLoading && piHoleStatuses.map((status, index) => {
-						let { address, status: statusText } = status;
+						let { address, status: statusText, errorMessage } = status;
 
-						return (<Status key={index} address={address} status={statusText} />)
+						return (<Status key={index} address={address} status={statusText} errorMessage={errorMessage} />)
 					})}
 				</div>
 				<h1>Disable PiHole</h1>
