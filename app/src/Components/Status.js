@@ -1,5 +1,5 @@
 import { Tooltip } from 'react-tooltip'
-import InfoIcon from '@mui/icons-material';
+import InfoIcon from '@mui/icons-material/Info';;
 
 function Status(piHoleStatus) {
 	let { address, status, errorMessage } = piHoleStatus;
