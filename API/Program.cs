@@ -16,12 +16,12 @@ builder.Services.AddHttpClient("pausehole-backend")
 		builder.AddRetry(new HttpRetryStrategyOptions
 		{
 			MaxRetryAttempts = 1,
-			Delay = TimeSpan.FromSeconds(2),
+			Delay = TimeSpan.FromSeconds(1),
 			BackoffType = DelayBackoffType.Constant
 		});
 
 		// Refer to https://www.pollydocs.org/strategies/timeout.html#defaults for timeout defaults
-		builder.AddTimeout(TimeSpan.FromSeconds(3));
+		builder.AddTimeout(TimeSpan.FromSeconds(2));
 	});
 
 builder.Services.AddCors();
