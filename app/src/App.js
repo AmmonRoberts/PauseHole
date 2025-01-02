@@ -93,7 +93,7 @@ function App() {
 			<header className="App-header">
 				<h1>PiHole Status</h1>
 				<div>
-					{piHolesLoading && <ReactLoading type={'spin'} color={'white'} height={'25%'} width={'25%'} />}
+					{piHolesLoading && <ReactLoading type={'spin'} color={'white'} />}
 					{!piHolesLoading && piHoleStatuses.map((status, index) => {
 						let { address, status: statusText, errorMessage } = status;
 
