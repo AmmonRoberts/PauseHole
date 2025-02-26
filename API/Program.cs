@@ -1,7 +1,9 @@
+using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
 using Polly;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,11 @@ builder.Services.AddHttpClient("pausehole-backend")
 	});
 
 builder.Services.AddCors();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<AuthService>();
+
+builder.Services.AddRefitClient<IPiHoleCLient>();
 
 var app = builder.Build();
 
