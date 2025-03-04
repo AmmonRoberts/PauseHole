@@ -1,9 +1,10 @@
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Options;
 using Polly;
-using Refit;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,14 +32,13 @@ builder.Services.AddCors();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<AuthService>();
 
-builder.Services.AddRefitClient<IPiHoleCLient>();
-
 var app = builder.Build();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("*"));
 
-app.MapGet("/status", async (IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, CancellationToken ct) =>
+app.MapGet("/status", async (IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, AuthService authService, CancellationToken cancellationToken) =>
 {
+
 	var client = factory.CreateClient("pausehole-backend");
 
 	var response = new List<PiHoleStatus>();
@@ -47,13 +47,18 @@ app.MapGet("/status", async (IHttpClientFactory factory, IOptionsSnapshot<PiHole
 	{
 		try
 		{
-			var statusResponse = await client.GetAsync($"{piHole.Value.URL}/admin/api.php?status&auth={piHole.Value.APIKey}", ct);
+			var session = await authService.GetSessionAsync(piHole, cancellationToken);
 
-			var statusDictionary = await statusResponse.Content.ReadFromJsonAsync<Dictionary<string, string>>(ct);
+			var request = new HttpRequestMessage(HttpMethod.Get, $"{piHole.Value.URL}/api/dns/blocking");
+			request.Headers.Add("sid", session);
+
+			var statusResponse = await client.SendAsync(request, cancellationToken);
+
+			var blockingStatus = await statusResponse.Content.ReadFromJsonAsync<BlockingInfoResponse>(cancellationToken);
 
 			response.Add(new PiHoleStatus
 			{
-				Status = statusDictionary?["status"] ?? "error",
+				Status = blockingStatus?.BlockingStatus ?? "error",
 				Address = piHole.Value.URL ?? "error",
 			});
 		}
@@ -71,7 +76,7 @@ app.MapGet("/status", async (IHttpClientFactory factory, IOptionsSnapshot<PiHole
 	return response;
 });
 
-app.MapPost("/pause", async ([FromQuery] uint minutes, IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, CancellationToken ct) =>
+app.MapPost("/pause", async ([FromQuery] uint minutes, IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, AuthService authService, CancellationToken cancellationToken) =>
 {
 	var client = factory.CreateClient("pausehole-backend");
 
@@ -81,13 +86,25 @@ app.MapPost("/pause", async ([FromQuery] uint minutes, IHttpClientFactory factor
 	{
 		try
 		{
-			var statusResponse = await client.GetAsync($"{piHole.Value.URL}/admin/api.php?disable={minutes * 60}&auth={piHole.Value.APIKey}", ct);
+			var session = await authService.GetSessionAsync(piHole, cancellationToken);
 
-			var statusDictionary = await statusResponse.Content.ReadFromJsonAsync<Dictionary<string, string>>(ct);
+			var requestBody = new BlockingInfoRequest
+			{
+				BlockingStatus = false,
+				Timer = minutes * 60
+			};
+
+			var request = new HttpRequestMessage(HttpMethod.Post, $"{piHole.Value.URL}/api/dns/blocking");
+			request.Headers.Add("sid", session);
+			request.Content = new StringContent(JsonSerializer.Serialize(requestBody));
+
+			var statusResponse = await client.SendAsync(request, cancellationToken);
+
+			var blockingStatus = await statusResponse.Content.ReadFromJsonAsync<BlockingInfoResponse>(cancellationToken);
 
 			response.Add(new PiHoleStatus
 			{
-				Status = statusDictionary?["status"] ?? "error",
+				Status = blockingStatus?.BlockingStatus ?? "error",
 				Address = piHole.Value.URL ?? "error",
 			});
 		}
@@ -105,7 +122,7 @@ app.MapPost("/pause", async ([FromQuery] uint minutes, IHttpClientFactory factor
 	return response;
 });
 
-app.MapPost("/unpause", async (IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, CancellationToken ct) =>
+app.MapPost("/unpause", async (IHttpClientFactory factory, IOptionsSnapshot<PiHoleSettings> config, AuthService authService, CancellationToken cancellationToken) =>
 {
 	var client = factory.CreateClient("pausehole-backend");
 
@@ -115,13 +132,24 @@ app.MapPost("/unpause", async (IHttpClientFactory factory, IOptionsSnapshot<PiHo
 	{
 		try
 		{
-			var statusResponse = await client.GetAsync($"{piHole.Value.URL}/admin/api.php?enable&auth={piHole.Value.APIKey}", ct);
+			var session = await authService.GetSessionAsync(piHole, cancellationToken);
 
-			var statusDictionary = await statusResponse.Content.ReadFromJsonAsync<Dictionary<string, string>>(ct);
+			var requestBody = new BlockingInfoRequest
+			{
+				BlockingStatus = true
+			};
+
+			var request = new HttpRequestMessage(HttpMethod.Post, $"{piHole.Value.URL}/api/dns/blocking");
+			request.Headers.Add("sid", session);
+			request.Content = new StringContent(JsonSerializer.Serialize(requestBody));
+
+			var statusResponse = await client.SendAsync(request, cancellationToken);
+
+			var blockingStatus = await statusResponse.Content.ReadFromJsonAsync<BlockingInfoResponse>(cancellationToken);
 
 			response.Add(new PiHoleStatus
 			{
-				Status = statusDictionary?["status"] ?? "error",
+				Status = blockingStatus?.BlockingStatus ?? "error",
 				Address = piHole.Value.URL ?? "error",
 			});
 		}

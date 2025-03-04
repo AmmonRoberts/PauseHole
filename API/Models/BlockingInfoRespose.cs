@@ -2,11 +2,11 @@ using System.Text.Json.Serialization;
 
 namespace API.Models;
 
-public class BlockingInfo
+public class BlockingInfoResponse
 {
 	[JsonPropertyName("blocking")]
-	public BlockingStatus BlockingStatus { get; set; }
+	public string BlockingStatus { get; set; }
 
 	[JsonPropertyName("timer")]
-	public double Timer { get; set; }
+	public double? Timer { get; set; }
 }

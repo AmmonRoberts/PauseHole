@@ -1,47 +1,62 @@
 using API.Models;
 using Microsoft.Extensions.Caching.Memory;
+using System.Text;
+using System.Text.Json;
 
 namespace API.Services;
 
 public class AuthService
 {
 	private readonly ILogger<AuthService> _logger;
-	private readonly IPiHoleCLient _piholeClient;
+	private readonly IHttpClientFactory _factory;
 	private readonly IMemoryCache _cache;
-	private const string CacheKey = "ExternalApiSession";
-	private static readonly TimeSpan SessionExpiry = TimeSpan.FromMinutes(30);
 
-	public AuthService(ILogger<AuthService> logger, IPiHoleCLient piholeClient, IMemoryCache cache)
+	public AuthService(ILogger<AuthService> logger, IHttpClientFactory factory, IMemoryCache cache)
 	{
 		_logger = logger;
-		_piholeClient = piholeClient;
+		_factory = factory;
 		_cache = cache;
 	}
 
-	public async Task<string> GetSessionAsync()
+	public async Task<string> GetSessionAsync(KeyValuePair<string, PiHoleConfig> piHole, CancellationToken cancellationToken)
 	{
-		if (_cache.TryGetValue(CacheKey, out string? sessionId) && !string.IsNullOrEmpty(sessionId))
+		if (_cache.TryGetValue(piHole.Key, out CachedSession? session))
 		{
-			_logger.LogInformation("Using cached session ID.");
+			if (session?.Expiry < DateTime.UtcNow)
+			{
+				_logger.LogInformation("Cached session ID expired.");
+				_cache.Remove(piHole.Key);
+			}
+			else
+			{
+				_logger.LogInformation("Using cached session ID.");
 
-			return sessionId;
+				return session.SessionId;
+			}
 		}
 
 		_logger.LogInformation("Fetching new session ID.");
 
-		var request = new AuthRequest { Password = "password" };
+		var client = _factory.CreateClient("pausehole-backend");
 
-		var response = await _piholeClient.AuthenticateAsync(request);
+		var authrequest = new AuthRequest { Password = piHole.Value.APIKey };
 
-		sessionId = response?.Session?.SessionId;
+		using var jsonContent = new StringContent(JsonSerializer.Serialize(authrequest), Encoding.UTF8, "application/json");
 
-		ArgumentException.ThrowIfNullOrEmpty(sessionId, "Session ID missing in response.");
+		var authResponse = await client.PostAsync($"{piHole.Value.URL}/api/auth", jsonContent, cancellationToken);
 
-		_cache.Set(CacheKey, sessionId, new MemoryCacheEntryOptions
+		var responseContent = await authResponse.Content.ReadFromJsonAsync<AuthResponse>(cancellationToken);
+
+		ArgumentException.ThrowIfNullOrEmpty(responseContent?.Session?.SessionId, "Session ID missing in response.");
+
+		var newSession = new CachedSession
 		{
-			AbsoluteExpirationRelativeToNow = SessionExpiry
-		});
+			SessionId = responseContent.Session.SessionId,
+			Expiry = DateTime.UtcNow.AddSeconds((double)responseContent?.Session?.Validity)
+		};
 
-		return sessionId;
+		_cache.Set(piHole.Key, newSession);
+
+		return newSession.SessionId;
 	}
 }
