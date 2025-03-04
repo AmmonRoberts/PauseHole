@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
 WORKDIR /app
 
 # Copy the rest of the source code and build the application
-COPY ./backend ./backend
+COPY ./API ./backend
 
 WORKDIR /app/backend
 
