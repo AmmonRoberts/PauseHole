@@ -29,6 +29,12 @@ function App() {
 		setMinutes(event.target.value);
 	}
 
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			pausePiHoles();
+		}
+	}
+
 	const pausePiHoles = async () => {
 		setPiHolesLoading(true);
 
@@ -102,10 +108,18 @@ function App() {
 				</div>
 				<h1>Disable PiHole</h1>
 				<div>
-					<TextField className='textField' label="How long (in minutes)?" variant="filled" onChange={handleChange} value={minutes} sx={{
-						backgroundColor: '#afb1b4',
-						color: 'white',
-					}} />
+					<TextField 
+						className='textField' 
+						label="How long (in minutes)?" 
+						variant="filled" 
+						onChange={handleChange} 
+						onKeyDown={handleKeyDown}
+						value={minutes} 
+						sx={{
+							backgroundColor: '#afb1b4',
+							color: 'white',
+						}} 
+					/>
 				</div>
 				<Box sx={{ '& button': { m: 2 } }}>
 					<Button className="button" color="error" onClick={pausePiHoles} variant="contained">Disable</Button>
