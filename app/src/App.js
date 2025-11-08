@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import ReactLoading from 'react-loading';
 import Status from './Components/Status.js';
+import Chip from '@mui/material/Chip';
 
 function App() {
 	const [minutes, setMinutes] = useState(5);
@@ -29,25 +30,40 @@ function App() {
 		setMinutes(event.target.value);
 	}
 
-	const pausePiHoles = async () => {
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			pausePiHoles();
+		}
+	}
+
+	const handlePresetClick = (presetMinutes) => {
+		setMinutes(presetMinutes);
+		pausePiHolesWithDuration(presetMinutes);
+	}
+
+	const pausePiHolesWithDuration = async (duration) => {
 		setPiHolesLoading(true);
 
-		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${minutes}`)
+		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${duration}`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
 
-				toast.success(`PiHoles disabled for ${minutes} minutes.`, {
+				toast.success(`PiHoles disabled for ${duration} minutes.`, {
 					position: "bottom-right",
 				})
 			})
 			.catch(error => {
 				console.error(error);
+				setPiHolesLoading(false);
 				toast.error(`Error disabling PiHoles.`, {
 					position: "bottom-right",
 				});
 			});
+	}
+
+	const pausePiHoles = async () => {
+		pausePiHolesWithDuration(minutes);
 	}
 
 	const unPausePiHoles = async () => {
@@ -102,11 +118,52 @@ function App() {
 				</div>
 				<h1>Disable PiHole</h1>
 				<div>
-					<TextField className='textField' label="How long (in minutes)?" variant="filled" onChange={handleChange} value={minutes} sx={{
-						backgroundColor: '#afb1b4',
-						color: 'white',
-					}} />
+					<TextField
+						className='textField'
+						label="How long (in minutes)?"
+						variant="filled"
+						onChange={handleChange}
+						onKeyDown={handleKeyDown}
+						value={minutes}
+						sx={{
+							backgroundColor: '#afb1b4',
+							color: 'white',
+						}}
+					/>
 				</div>
+				<Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', alignItems: 'center', marginTop: 1, marginBottom: 1 }}>
+					<span style={{ fontSize: '0.85rem', opacity: 0.7 }}>Quick:</span>
+					<Chip
+						label="10 min"
+						size="small"
+						onClick={() => handlePresetClick(10)}
+						sx={{
+							backgroundColor: 'rgba(255, 255, 255, 0.1)',
+							color: 'white',
+							'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.2)' }
+						}}
+					/>
+					<Chip
+						label="30 min"
+						size="small"
+						onClick={() => handlePresetClick(30)}
+						sx={{
+							backgroundColor: 'rgba(255, 255, 255, 0.1)',
+							color: 'white',
+							'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.2)' }
+						}}
+					/>
+					<Chip
+						label="60 min"
+						size="small"
+						onClick={() => handlePresetClick(60)}
+						sx={{
+							backgroundColor: 'rgba(255, 255, 255, 0.1)',
+							color: 'white',
+							'&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.2)' }
+						}}
+					/>
+				</Box>
 				<Box sx={{ '& button': { m: 2 } }}>
 					<Button className="button" color="error" onClick={pausePiHoles} variant="contained">Disable</Button>
 					<Button className="button" color="success" onClick={unPausePiHoles} variant="contained">Enable</Button>
