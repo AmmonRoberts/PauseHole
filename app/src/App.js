@@ -132,7 +132,7 @@ function App() {
 					/>
 				</div>
 				<Box sx={{ display: 'flex', gap: 1, justifyContent: 'center', alignItems: 'center', marginTop: 1, marginBottom: 1 }}>
-					<span style={{ fontSize: '0.85rem', opacity: 0.7 }}>Quick:</span>
+					<span style={{ fontSize: '0.85rem', opacity: 0.7 }}>Quick pause:</span>
 					<Chip
 						label="10 min"
 						size="small"
