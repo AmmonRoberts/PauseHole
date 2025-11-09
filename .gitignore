@@ -32,3 +32,4 @@ appsettings*.json
 /.vs
 /PauseHole/.vs
 PauseHole/PauseHole.AppHost/Properties/launchSettings.json
+/app/public/config.json

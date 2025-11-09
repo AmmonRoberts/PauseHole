@@ -1,5 +1,5 @@
 # App
-FROM node:lts as app-build
+FROM node:lts AS app-build
 
 WORKDIR /app
 
