@@ -8,13 +8,16 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useEffect } from 'react';
 import ReactLoading from 'react-loading';
-import Status from './Components/Status.js';
+import Status from './Components/Status.jsx';
 import Chip from '@mui/material/Chip';
+import { getConfig } from './config';
 
 function App() {
 	const [minutes, setMinutes] = useState(5);
 	const [piHoleStatuses, setPiholeStatuses] = useState([]);
 	const [piHolesLoading, setPiHolesLoading] = useState(true);
+	
+	const backendAddress = getConfig().PauseHoleBackendAddress;
 
 	useEffect(() => {
 		getStatus();
@@ -44,7 +47,7 @@ function App() {
 	const pausePiHolesWithDuration = async (duration) => {
 		setPiHolesLoading(true);
 
-		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/pause?minutes=${duration}`)
+		await axios.post(`${backendAddress}/pause?minutes=${duration}`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -69,8 +72,7 @@ function App() {
 	const unPausePiHoles = async () => {
 		setPiHolesLoading(true);
 
-		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.post(`${process.env.REACT_APP_BACKEND_ADDRESS}/unpause`)
+		await axios.post(`${backendAddress}/unpause`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
@@ -90,8 +92,7 @@ function App() {
 	async function getStatus() {
 		setPiHolesLoading(true);
 
-		// Hard-coding the URL for now. I don't want to deal with config in the frontend.
-		await axios.get(`${process.env.REACT_APP_BACKEND_ADDRESS}/status`)
+		await axios.get(`${backendAddress}/status`)
 			.then(response => {
 				setPiholeStatuses(response.data);
 				setPiHolesLoading(false);
