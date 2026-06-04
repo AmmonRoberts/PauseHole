@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path=".gitignore" />
+    <File Path="Dockerfile" />
+    <File Path="nuget.config" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="API/API.csproj" />
+  <Project Path="app/app.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="PauseHole.AppHost/PauseHole.AppHost.csproj" />
+  <Project Path="PauseHole.ServiceDefaults/PauseHole.ServiceDefaults.csproj" />
+</Solution>

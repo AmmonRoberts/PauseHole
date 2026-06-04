@@ -8,7 +8,7 @@ var frontend = builder.AddBunApp("app", "../app", "start")
 	.WithReference(backend)
 	.WithHttpEndpoint(env: "PORT")
 	.WithExternalHttpEndpoints()
-	.WithBunPackageInstallation()
+	.WithBun()
 	.PublishAsDockerFile();
 
 var launchProfile = builder.Configuration["DOTNET_LAUNCH_PROFILE"] ??
@@ -20,4 +20,4 @@ if (builder.Environment.IsDevelopment() && launchProfile == "https")
 	frontend.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
 }
 
-builder.Build().Run();
+await builder.Build().RunAsync();
