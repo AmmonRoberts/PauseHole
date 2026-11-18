@@ -8,7 +8,7 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
+//builder.AddServiceDefaults();
 
 builder.Services.Configure<PiHoleSettings>(builder.Configuration.GetSection("PiHoleSettings"));
 

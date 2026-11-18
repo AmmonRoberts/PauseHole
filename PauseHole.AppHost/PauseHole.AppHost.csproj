@@ -1,34 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<IsAspireHost>true</IsAspireHost>
-		<UserSecretsId>bd611b0b-6c63-47a2-8418-4fb578fa17d0</UserSecretsId>
+		<UserSecretsId>4c092d56-2b7f-42eb-89b7-c370197548b3</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.AppHost" Version="9.5.2" />
-		<PackageReference Include="Aspire.Hosting.NodeJs" Version="9.5.2" />
-		<PackageReference Include="CommunityToolkit.Aspire.Hosting.Bun" Version="9.9.0" />
+		<PackageReference Include="Aspire.Hosting.AppHost" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.Dotnet" Version="17.0.0" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" Version="17.0.0" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\API\API.csproj" />
-	</ItemGroup>
-
-	<Target Name="RestoreBun" BeforeTargets="Build" Condition=" '$(DesignTimeBuild)' != 'true' ">
-		<ItemGroup>
-			<PackageJsons Include="..\*\package.json" />
-		</ItemGroup>
-
-		<!-- Install npm packages if node_modules is missing -->
-		<Message Importance="Normal" Text="Installing npm packages using Bun for %(PackageJsons.RelativeDir)" Condition="!Exists('%(PackageJsons.RootDir)%(PackageJsons.Directory)/node_modules')" />
-		<Exec Command="bun install" WorkingDirectory="%(PackageJsons.RootDir)%(PackageJsons.Directory)" Condition="!Exists('%(PackageJsons.RootDir)%(PackageJsons.Directory)/node_modules')" />
-	</Target>
-
-	<Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
 
 </Project>

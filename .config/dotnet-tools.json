@@ -3,9 +3,16 @@
   "isRoot": true,
   "tools": {
     "aspirate": {
-      "version": "8.0.7",
+      "version": "9.1.0",
       "commands": [
         "aspirate"
+      ],
+      "rollForward": false
+    },
+    "aspire.cli": {
+      "version": "17.0.0",
+      "commands": [
+        "aspire"
       ],
       "rollForward": false
     }
