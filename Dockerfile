@@ -1,5 +1,5 @@
 # Backend
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS backend-build
 
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN dotnet build -c Release --no-restore
 RUN dotnet publish -c Release --no-restore --no-build -o /app/backend/publish
 
 # Backend runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS backend-runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS backend-runtime
 WORKDIR /app
 COPY --from=backend-build /app/backend/publish .
 
